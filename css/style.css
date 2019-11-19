@@ -3,6 +3,15 @@
   margin: 0 auto;
 }
 
+html {
+  width: 960px;
+}
+
+#titleContainer {
+  margin: 40px 0px;
+  font-family: 'Concert One', cursive;
+}
+
 img {
   display: block;
   margin-left: auto;
@@ -11,6 +20,11 @@ img {
   border: 2px solid blueviolet;
 }
 
+#productImageList {
+  margin: 40px 0px;
+}
+
 #productImageList li {
   display: inline-block;
+  font-size: 1.5em;
 }

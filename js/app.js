@@ -71,7 +71,6 @@ function grabThreeProducts() {
   while (displayedImgs.length < 3) {
     var randomIndex = Math.floor(Math.random() * Product.allProducts.length);
     if (checkDuplicate(Product.allProducts[randomIndex].name, displayedImgs) === true) {
-
       displayedImgs.push(Product.allProducts[randomIndex]);
     }
   }
