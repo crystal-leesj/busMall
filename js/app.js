@@ -32,12 +32,13 @@ function addElement(tag, container, text) {
 
 // Helper function to check the duplication
 function checkDuplicate(objName, arr) {
+  var match = 0;
   for (var i = 0; i < arr.length; i++) {
     if (objName === arr[i].name) {
-      return false;
+      match++;
     }
   }
-  return true;
+  return match;
 }
 
 
@@ -64,11 +65,21 @@ new Product('wine-glass', 'img/wine-glass.jpg');
 // console.log('allProducts : ', Product.allProducts);
 
 function grabThreeProducts() {
+  var previousSet = [];
+  if (currentFirstProduct !== null) {
+    previousSet.push(currentFirstProduct.name);
+    previousSet.push(currentSecondProduct.name);
+    previousSet.push(currentThirdProduct.name);
+  }
   var displayedImgs = [];
   while (displayedImgs.length < 3) {
     var randomIndex = Math.floor(Math.random() * Product.allProducts.length);
-    if (checkDuplicate(Product.allProducts[randomIndex].name, displayedImgs) === true) {
-      displayedImgs.push(Product.allProducts[randomIndex]);
+    // Check Ducplicate on three displayed img
+    if (checkDuplicate(Product.allProducts[randomIndex].name, displayedImgs) === 0) {
+      // Check immediate previous set
+      if (previousSet.includes(Product.allProducts[randomIndex].name) === false) {
+        displayedImgs.push(Product.allProducts[randomIndex]);
+      }
     }
   }
   firstImg.src = displayedImgs[0].imgURL;
@@ -106,9 +117,6 @@ function clickHandler(event) {
       currentThirdProduct.clickCtr++;
     }
 
-    // console.log('currentFirstProduct :', currentFirstProduct);
-    // console.log('currentSecondProduct :', currentSecondProduct);
-    // console.log('currentThirdProduct :', currentThirdProduct);
     grabThreeProducts();
   }
   counter++;
@@ -122,7 +130,7 @@ function clickHandler(event) {
 
 productImageList.addEventListener('click', clickHandler);
 
-
+// Create result chart
 function createChart() {
   var label = [];
   var voteData = [];
@@ -132,7 +140,8 @@ function createChart() {
     voteData.push(Product.allProducts[i].clickCtr);
     shownData.push(Product.allProducts[i].shownCtr);
   }
-  var myChart = new Chart(ctx, {
+  // eslint-disable-next-line no-undef
+  new Chart(ctx, {
     type: 'bar',
     data: {
       labels: label,
