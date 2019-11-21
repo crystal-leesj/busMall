@@ -1,3 +1,5 @@
+'use strict';
+
 // var productImageContainer = document.getElementById('productImageContainer');
 var productImageList = document.getElementById('productImageList');
 var firstImg = document.getElementById('firstImg');
@@ -22,6 +24,22 @@ function Product(name, imgURL) {
 // Array to store all the products
 Product.allProducts = [];
 
+// Check localStoage
+function updateLocalStorage() {
+  console.log('**updateLocalStorage');
+  var productsJSON = JSON.stringify(Product.allProducts);
+  localStorage.setItem('data', productsJSON);
+}
+
+function getLocalStorage() {
+  console.log('**getLocalStorage');
+  var localData = localStorage.getItem('data');
+  var previousData = JSON.parse(localData);
+  if (previousData !== null) {
+    Product.allProducts = previousData;
+  }
+}
+
 // Helper function to display document elements
 function addElement(tag, container, text) {
   var element = document.createElement(tag);
@@ -44,6 +62,7 @@ function checkDuplicate(objName, arr) {
 
 new Product('bag', 'img/bag.jpg');
 new Product('banana', 'img/banana.jpg');
+new Product('bathroom', 'img/bathroom.jpg');
 new Product('boots', 'img/boots.jpg');
 new Product('breakfast', 'img/breakfast.jpg');
 new Product('bubblegum', 'img/bubblegum.jpg');
@@ -123,6 +142,8 @@ function clickHandler(event) {
 
   if(counter === 25) {
     alert('Done!');
+    updateLocalStorage();
+    productImageList.removeEventListener('click', clickHandler);
     createChart();
     displayTotalResult();
   }
@@ -140,6 +161,7 @@ function createChart() {
     voteData.push(Product.allProducts[i].clickCtr);
     shownData.push(Product.allProducts[i].shownCtr);
   }
+
   // eslint-disable-next-line no-undef
   new Chart(ctx, {
     type: 'bar',
@@ -215,4 +237,5 @@ function createChart() {
   });
 }
 
+getLocalStorage();
 
